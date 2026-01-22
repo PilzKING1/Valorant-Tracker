@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Valorant Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f1923;
+            color: white;
+        }
+
+        header {
+            background: #ff4655;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #1c2b3a;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #ff4655;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .stats {
+            margin-top: 25px;
+            display: none;
+        }
+
+        .stat {
+            background: #0f1923;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+<header>VALORANT TRACKER</header>
+
+<div class="container">
+    <input id="riotId" type="text" placeholder="Enter Riot ID (e.g. Player#EUW)">
+    <button onclick="trackPlayer()">Track Player</button>
+
+    <div class="stats" id="stats">
+        <div class="stat"><span>Rank</span><span id="rank"></span></div>
+        <div class="stat"><span>Kills</span><span id="kills"></span></div>
+        <div class="stat"><span>Deaths</span><span id="deaths"></span></div>
+        <div class="stat"><span>Win Rate</span><span id="winrate"></span></div>
+    </div>
+</div>
+
+<script>
+    function trackPlayer() {
+        const riotId = document.getElementById("riotId").value;
+
+        if (riotId.trim() === "") {
+            alert("Please enter a Riot ID");
+            return;
+        }
+
+        // Fake data (placeholder)
+        const ranks = ["Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Ascendant", "Immortal", "Radiant"];
+
+        document.getElementById("rank").innerText =
+            ranks[Math.floor(Math.random() * ranks.length)];
+
+        document.getElementById("kills").innerText =
+            Math.floor(Math.random() * 5000);
+
+        document.getElementById("deaths").innerText =
+            Math.floor(Math.random() * 5000);
+
+        document.getElementById("winrate").innerText =
+            Math.floor(Math.random() * 100) + "%";
+
+        document.getElementById("stats").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
