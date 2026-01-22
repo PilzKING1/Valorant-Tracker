@@ -111,7 +111,7 @@ hr {
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
 (function(){
-  emailjs.init("YOUR_PUBLIC_KEY");
+  emailjs.init("M9RTnpa6Ex6F3Fvv9");
 })();
 
 function sendFeedback() {
@@ -124,7 +124,7 @@ function sendFeedback() {
     return;
   }
 
-  emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+  emailjs.send("service_8ivg749", "template_pdiujc3", {
     from_name: name,
     message: message
   }).then(() => {
@@ -160,4 +160,5 @@ function trackPlayer() {
 
 </body>
 </html>
+
 
