@@ -1,114 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Valorant Tracker</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #0f1923;
-            color: white;
-        }
+<meta charset="UTF-8">
+<title>Valorant Tracker</title>
 
-        header {
-            background: #ff4655;
-            padding: 20px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-        }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0f1923;
+  color: white;
+}
 
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: #1c2b3a;
-            padding: 30px;
-            border-radius: 10px;
-        }
+header {
+  background: #ff4655;
+  padding: 20px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 5px;
-            border: none;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #1c2b3a;
+  padding: 30px;
+  border-radius: 10px;
+}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #ff4655;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
 
-        button:hover {
-            opacity: 0.9;
-        }
+textarea {
+  resize: vertical;
+  height: 100px;
+}
 
-        .stats {
-            margin-top: 25px;
-            display: none;
-        }
+button {
+  width: 100%;
+  padding: 12px;
+  background: #ff4655;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-        .stat {
-            background: #0f1923;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
+button:hover {
+  opacity: 0.9;
+}
+
+.stats {
+  margin-top: 25px;
+  display: none;
+}
+
+.stat {
+  background: #0f1923;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+hr {
+  margin: 40px 0;
+  border: 1px solid #2a3b4d;
+}
+</style>
 </head>
+
 <body>
 
 <header>VALORANT TRACKER</header>
 
 <div class="container">
-    <input id="riotId" type="text" placeholder="Enter Riot ID (e.g. Player#EUW)">
-    <button onclick="trackPlayer()">Track Player</button>
 
-    <div class="stats" id="stats">
-        <div class="stat"><span>Rank</span><span id="rank"></span></div>
-        <div class="stat"><span>Kills</span><span id="kills"></span></div>
-        <div class="stat"><span>Deaths</span><span id="deaths"></span></div>
-        <div class="stat"><span>Win Rate</span><span id="winrate"></span></div>
-    </div>
+  <!-- TRACKER -->
+  <h2>Track a Player</h2>
+  <input id="riotId" placeholder="Enter Riot ID (e.g. Player#EUW)">
+  <button onclick="trackPlayer()">Track Player</button>
+
+  <div class="stats" id="stats">
+    <div class="stat"><span>Rank</span><span id="rank"></span></div>
+    <div class="stat"><span>Kills</span><span id="kills"></span></div>
+    <div class="stat"><span>Deaths</span><span id="deaths"></span></div>
+    <div class="stat"><span>Win Rate</span><span id="winrate"></span></div>
+  </div>
+
+  <hr>
+
+  <!-- FEEDBACK -->
+  <h2>Send Feedback to the Developer</h2>
+  <input id="name" placeholder="Your name">
+  <textarea id="message" placeholder="Your feedback"></textarea>
+  <button onclick="sendFeedback()">Send Feedback</button>
+  <p id="status"></p>
+
 </div>
 
+<!-- EMAILJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-    function trackPlayer() {
-        const riotId = document.getElementById("riotId").value;
+(function(){
+  emailjs.init("YOUR_PUBLIC_KEY");
+})();
 
-        if (riotId.trim() === "") {
-            alert("Please enter a Riot ID");
-            return;
-        }
+function sendFeedback() {
+  const name = document.getElementById("name").value;
+  const message = document.getElementById("message").value;
+  const status = document.getElementById("status");
 
-        // Fake data (placeholder)
-        const ranks = ["Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Ascendant", "Immortal", "Radiant"];
+  if (!name || !message) {
+    status.innerText = "Please fill out all fields.";
+    return;
+  }
 
-        document.getElementById("rank").innerText =
-            ranks[Math.floor(Math.random() * ranks.length)];
+  emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+    from_name: name,
+    message: message
+  }).then(() => {
+    status.innerText = "Feedback sent successfully! Thank you 🙂";
+    document.getElementById("name").value = "";
+    document.getElementById("message").value = "";
+  }, () => {
+    status.innerText = "Failed to send feedback.";
+  });
+}
+</script>
 
-        document.getElementById("kills").innerText =
-            Math.floor(Math.random() * 5000);
+<!-- TRACKER SCRIPT -->
+<script>
+function trackPlayer() {
+  const riotId = document.getElementById("riotId").value;
+  if (!riotId) return alert("Please enter a Riot ID");
 
-        document.getElementById("deaths").innerText =
-            Math.floor(Math.random() * 5000);
+  const ranks = ["Iron","Bronze","Silver","Gold","Platinum","Diamond","Ascendant","Immortal","Radiant"];
 
-        document.getElementById("winrate").innerText =
-            Math.floor(Math.random() * 100) + "%";
+  document.getElementById("rank").innerText =
+    ranks[Math.floor(Math.random() * ranks.length)];
+  document.getElementById("kills").innerText =
+    Math.floor(Math.random() * 5000);
+  document.getElementById("deaths").innerText =
+    Math.floor(Math.random() * 5000);
+  document.getElementById("winrate").innerText =
+    Math.floor(Math.random() * 100) + "%";
 
-        document.getElementById("stats").style.display = "block";
-    }
+  document.getElementById("stats").style.display = "block";
+}
 </script>
 
 </body>
 </html>
+
